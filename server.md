@@ -19,7 +19,7 @@ vim /etc/sysconfig/selinux
 ip addr add 162.126.200.1/24 dev enp0s8
 ````
 
-change the file of configuration to look like the image below:
+change the configuration file to look like the image below:
 
 ````bash
 vim /etc/sysconfig/network-scripts/ifcfg-enp0s8
@@ -123,7 +123,7 @@ with custom port:
 scp -P <port> <sourcePath> <destinationPath>
 ````
 
-**Note: ** The remote path syntax consists of the remote machine's user followed by the '@' character, the remote machine's ip the ':' character and then the file/folder path on the remote machine.
+**Note:** The remote path syntax consists of the remote machine's user followed by the '@' character, the remote machine's ip the ':' character and then the file/folder path on the remote machine.
 
 ### Examples
 
@@ -175,7 +175,7 @@ and change the listen address parameter with the desired address:
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/ssh-listen-address.png)
 
-**note: ** use the internal network ip from the server for the address
+**Note: ** use the internal network ip from the server for the address
 
 Now stop and start the ssh service
 
