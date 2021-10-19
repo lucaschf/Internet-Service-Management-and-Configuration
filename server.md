@@ -93,7 +93,7 @@ ps aux | grep sshd
 
 the result will looks like:
 
-![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/checking-ssh-status-2.png)
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/checking-ssh-status.png)
 
 ## Accessing  shh
 
