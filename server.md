@@ -218,3 +218,11 @@ and change the listen Port parameter
 ### Example
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/ssh-change-port.png)
+
+Now stop and start the ssh service:
+
+````bash
+systemctl stop sshd
+systemctl start sshd	
+````
+
