@@ -1,4 +1,4 @@
-## Disable firewal:
+## Disable firewall:
 
 ````bash
 systemctl stop firewalld
@@ -394,9 +394,13 @@ change the cached objects size :
 
 then enable the disk cache and define the disk size reserved for it(line 3707):
 
-![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-maxi-disk-object-size.png)
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-disk-cache.png)
 
-then set the maximum and minimum object to be stored in disk(lines 2544 and 3527):
+then set the maximum and minimum object to be stored in disk(lines 3532 and 3549):
 
-![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-maximum-disk-object-size.png)
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-maximun-disk-object-size.png)
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-minimum-disk-object-size.png)
+
+
 
