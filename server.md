@@ -175,7 +175,7 @@ and change the listen address parameter with the desired address:
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/ssh-listen-address.png)
 
-**Note: ** use the internal network ip from the server for the address
+**Note:** use the internal network ip from the server for the address
 
 Now stop and start the ssh service
 
@@ -303,7 +303,7 @@ systemctl enable dhcpd
 
 Test in the client side.
 
-### Fixing an ip to a machine
+### Fixing an IP to a machine
 
 open the dhcp config file:
 
@@ -322,11 +322,7 @@ systemctl stop dhcpd
 systemctl start dhcpd
 `````
 
-
-
-
-
-## Installing Squid Proxy
+## Squid Proxy
 
 check package name
 
@@ -346,5 +342,61 @@ check squid file config
 vim /etc/squid/squid.conf
 `````
 
+copy the example file and replace the config file:
 
+````bash
+cp /usr/share/doc/squid/squid.conf.documented /etc/squid/squid.conf
+````
+
+open the config file
+
+`````bash
+vim /etc/squid/squid.conf
+`````
+
+Go to line 1297 and comment the ACLs like the picture bellow:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-comment-acl.png)
+
+create an ACL for the local network:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-local-network-acl.png)
+
+go to line 1523 and delete the example http_access directive for localnet:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-directive-local-network-custom-add.png)
+
+then add a directive for your local network:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-directive-local-network-custom-add.png)
+
+then save the file and start the service
+
+````bash
+systemctl start squid
+````
+
+### Cache
+
+open the squid config file
+
+````bash
+vim /etc/squid/squid.conf
+````
+
+go to line 3435 and uncomment it:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-cache-enable.png)
+
+change the cached objects size :
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-cache-objects-size.png)
+
+then enable the disk cache and define the disk size reserved for it(line 3707):
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-maxi-disk-object-size.png)
+
+then set the maximum and minimum object to be stored in disk(lines 2544 and 3527):
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-maximum-disk-object-size.png)
 
