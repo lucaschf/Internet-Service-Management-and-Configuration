@@ -11,7 +11,7 @@ systemctl disable firewalld
 vim /etc/sysconfig/selinux
 `````
 
-![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/linuxse-disabled.png)
+ ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/linuxse-disabled.png)
 
 ## Internal network Ip configuration
 
@@ -25,7 +25,7 @@ change the configuration file to look like the image below:
 vim /etc/sysconfig/network-scripts/ifcfg-enp0s8
 ````
 
-![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/internal-network-interface-config-file.png)
+ ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/internal-network-interface-config-file.png)
 
 turn the interface down, then turn it up again
 
