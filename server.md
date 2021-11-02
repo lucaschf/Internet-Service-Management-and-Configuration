@@ -123,7 +123,7 @@ with custom port:
 scp -P <port> <sourcePath> <destinationPath>
 ````
 
-**Note:** The remote path syntax consists of the remote machine's user followed by the '@' character, the remote machine's ip the ':' character and then the file/folder path on the remote machine.
+**Note:** The remote path syntax consists of the remote machine's user followed by the '@' character, the remote machine's IP the ':' character and then the file/folder path on the remote machine.
 
 ### Examples
 
@@ -177,7 +177,7 @@ and change the listen address parameter with the desired address:
 
 **Note:** use the internal network ip from the server for the address
 
-Now stop and start the ssh service
+Now save the changes, stop and start the ssh service
 
 ````bash
 systemctl stop sshd
@@ -219,7 +219,7 @@ and change the listen Port parameter
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/ssh-change-port.png)
 
-Now stop and start the ssh service:
+Now save the changes, stop and start the ssh service:
 
 ````bash
 systemctl stop sshd
@@ -315,7 +315,7 @@ create a host with an identifier, MAC and the desired IP address(You can retriev
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/dhcp-fixing-ip-to-host.png)
 
-restart the service:
+save the changes and  restart the service:
 
 `````bash
 systemctl stop dhcpd
@@ -342,6 +342,12 @@ check squid file config
 vim /etc/squid/squid.conf
 `````
 
+enable it to run on boot:
+
+````bash
+systemctl enable squid
+````
+
 copy the example file and replace the config file:
 
 ````bash
@@ -354,7 +360,7 @@ open the config file
 vim /etc/squid/squid.conf
 `````
 
-Go to line 1297 and comment the ACLs like the picture bellow:
+Go to line ~ 1297 and comment the ACLs like the picture bellow:
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-comment-acl.png)
 
@@ -362,7 +368,7 @@ create an ACL for the local network:
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-local-network-acl.png)
 
-go to line 1523 and delete the example http_access directive for localnet:
+go to line ~ 1523 and delete the example http_access directive for localnet:
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-directive-local-network-custom-add.png)
 
@@ -392,15 +398,105 @@ change the cached objects size :
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-cache-objects-size.png)
 
-then enable the disk cache and define the disk size reserved for it(line 3707):
+then enable the disk cache and define the disk size reserved for it(~ line 3707):
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-disk-cache.png)
 
-then set the maximum and minimum object to be stored in disk(lines 3532 and 3549):
+then set the maximum and minimum object to be stored in disk(~ lines 3532 and 3549):
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-maximun-disk-object-size.png)
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-minimum-disk-object-size.png)
 
+setup the cache clearance(~ line 3800):
 
+ ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-cache-clearance.png)
+
+ ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-cache-clearance-2.png)
+
+setup the max file size download:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-cache-body-max-size.png)
+
+then restart squid:
+
+````basic
+systemctl stop squid
+systemctl start squid	
+````
+
+## ALC for a specific host
+
+open the squid config file
+
+`````bash
+vim /etc/squid/squid.conf
+`````
+
+create an ACL with the desired src:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-acl-client.png)
+
+### deny access
+
+create a rule deny:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-acl-client-deny.png)
+
+another way for denying  could be allowing all local network with exception of the client:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-acl-client-deny-way-2.png)
+
+save the changes and restart the squid
+
+````bash
+systemctl stop squid
+systemctl start squid
+````
+
+## ACL URL Regex
+
+open the squid config file
+
+````bash
+vim /etc/squid/squid.conf	
+````
+
+create the acl as the example bellow:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-acl-regex-facebook.png)
+
+then deny the access:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-deny-facebook.png)
+
+save the changes and restart the service
+
+````bash
+systemctl stop squid
+systemctl start squid
+````
+
+PS.: is possible to denby just addin a '!' before it's name:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-deny-facebook-2.png)
+
+### Multiple regex ACL
+
+create an ACL with the path to file containing all denied URLs:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-acl-multiple-url_regex.png)
+
+then deny it:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-deny-multiple-regex.png)
+
+**Important** before restarting squid, make sure you created the file containing all url regex.
+
+then restart the service:
+
+````bash
+systemctl stop squid
+systemctl start squid
+````
 
