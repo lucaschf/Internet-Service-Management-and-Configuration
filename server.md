@@ -500,3 +500,26 @@ systemctl stop squid
 systemctl start squid
 ````
 
+## ACL Time
+
+Open the squid config file
+
+`````bash
+vim /etc/squid/squid.conf
+`````
+
+Create a time ACL like the example below:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-acl-time.png)
+
+Now you can give or deny access in time. In the example bellow we allowing to access the prohibited sites in the lunch time:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-acl-client-deny-url-regex_except-lunch-time.png)
+
+reboot the service
+
+````bash
+systemctl stop squid
+systemctl start squid
+````
+
