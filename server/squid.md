@@ -192,10 +192,83 @@ Now you can give or deny access in time. In the example bellow we allowing to ac
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-acl-client-deny-url-regex_except-lunch-time.png)
 
-reboot the service
+restart the service
 
 ````bash
 systemctl stop squid
 systemctl start squid
 ````
+
+## User authentication
+
+first of all install the httpd-tolls package;
+
+````bash
+yum install httpd-tools
+````
+
+then create an empty file that will contain the passwords(in production you should hide it)
+
+````bash
+touch /etc/squid/senhas.txt
+````
+
+Now you can create users with the command htpaswd
+
+````
+htpasswd USERS_FILE username 
+````
+
+**Example**
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-hpasswd-example.png)
+
+We need to use a third party program to enable squid authenticatio. You can check if the authentication is working by runnig the command:
+
+`````bash
+/usr/lib64/squid/basic_ncsa_auth SQUID_PASSWORD_FILE
+`````
+
+and inform a registered user and its password.
+
+**Example**
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-auth-test-example.png)
+
+Open the squid config file:
+
+`````bash
+vim /etc/squid/squid.conf
+`````
+
+Now set the third party auth and the message (~line 583):
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-third-party-auth-config.png)
+
+Now, create an ACL for authentication
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-acl-auth.png)
+
+And change the access for only authenticated
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-allow-only-auth.png)
+
+restart the service
+
+````bash
+systemctl stop squid
+systemctl start squid
+````
+
+Now the client must authenticate to access.
+
+You can check the access logs by accessing the file:
+
+`````bash
+/var/log/squid/access.log
+`````
+
+**Example**
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-access-logs.png)
 
