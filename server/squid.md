@@ -1,5 +1,11 @@
 ## Squid Proxy
 
+***Each file change must be saved before restarting the service. For squid, we can use the reconfigure option instead of stopping and starting the service:***
+
+````bash
+squid -k reconfigure
+````
+
 check package name
 
 `````bash
@@ -272,3 +278,42 @@ You can check the access logs by accessing the file:
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-access-logs.png)
 
+##  User-Specific ACL
+
+Open the squid config file:
+
+`````bash
+vim /etc/squid/squid.conf
+`````
+
+Create an ACL for the desired user (we gonna use maria as example)
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-user-acl-maria.png)
+
+now we can deny the facebook access for maria for example:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-deny-user-maria-facebook.png)
+
+or allow the facebook access for maria during a certain time:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-acl-noite.png)
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/squid-deny-user-maria-facebook-except-night.png)
+
+restart the service
+
+`````bash
+systemctl stop squid
+systemctl start squid
+`````
+
+## Preventing users from bypassing the proxy
+
+run the commands bellow, it will add an rule in firewall to reject any http/https outside proxy.
+
+````bash
+iptables -A FORWARD -0 enp0s3 -p tcp --dport 80 REJECT
+iptables -A FORWARD -0 enp0s3 -p tcp --dport 443 REJECT
+````
+
+***
