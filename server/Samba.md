@@ -66,7 +66,7 @@ in the end of the configuration file, create a new session for file sharing:
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-directories-sharing.png)
 
-now create the directories defined for sharing(in case they not exists)
+now create the directories defined for the share (if they don't exist)
 
 ````bash
 mkdir /home/samba /home/samba/arquivos /home/samba/musicas 
@@ -88,7 +88,7 @@ systemctl enable smb
 systemctl enable wsdd
 ````
 
-test if things are working properly;
+test if things are working properly:
 
 ````bash
 testparm
@@ -102,7 +102,7 @@ you can press ENTER and see the current samba definitions:
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-first-definitions.png)
 
-test if things are working properly making a local access;
+test if things are working properly making a local access:
 
 ````bash
 smbclient -L 127.0.0.1 -U%
@@ -110,5 +110,5 @@ smbclient -L 127.0.0.1 -U%
 
 it should looks like: 
 
-![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-local-tests.png)
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-local-test.png)
 
