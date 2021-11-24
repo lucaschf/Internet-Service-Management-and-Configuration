@@ -134,7 +134,7 @@ Now we can mount the shared folder by running the command *cifs.mount*. As examp
 
 **Username:** guest
 
-**Password: ** -
+**Password:** -
 
 ````bash
 mount.cifs //192.168.200.173/Downloads /mnt/ -o username=guest,password= 
