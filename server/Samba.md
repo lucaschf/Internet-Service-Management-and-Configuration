@@ -1,4 +1,4 @@
-# Samba
+# Samba - server
 
 ## Installing
 
@@ -72,6 +72,12 @@ now create the directories defined for the share (if they don't exist)
 mkdir /home/samba /home/samba/arquivos /home/samba/musicas 
 ````
 
+and set the permissions (in this case we allowing all since is just for studies)
+
+````bash
+chmod 777 /home/samba/arquivos /home/samba/musicas 
+````
+
 start the samba services(in sequence):
 
 ````bash
@@ -111,4 +117,26 @@ smbclient -L 127.0.0.1 -U%
 it should looks like: 
 
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-local-test.png)
+
+## Accessing a client shared folder 
+
+In order to access a client shared folder, we need a tool that is not directly support. You can install it by running the command:
+
+````bash
+yum install cifs-utils
+````
+
+Now we can mount the shared folder by running the command *cifs.mount*. As example, we will use the following info:
+
+**Client Ip:** 192.168.200.173
+
+**Shared folder:** Downloads
+
+**Username:** guest
+
+**Password: ** -
+
+````bash
+mount.cifs //192.168.200.173/Downloads /mnt/ -o username=guest,password= 
+````
 
