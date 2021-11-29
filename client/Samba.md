@@ -65,3 +65,65 @@ Go to the section *All networks* and change the *Password protect sharing* turni
 ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-sharing-from-client-step-9.png)
 
 Save the changes and close the properties window.
+
+### Adding machine to samba domain
+
+we need to change the windows machine name and domain name. For this, go to pc properties:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-1.png)
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-2.png)
+
+go to related settings and click in *rename this pc (Advanced)*
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-3.png)
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-4.png)
+
+then click in *change*. Change the computer name, check workgroup and save, as bellow
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-5.png)
+
+Restart the machine.
+
+download the file [](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/Win10-netlogon) an execute it (check it before running it)
+
+the content must be this:
+
+`````
+Windows Registry Editor Version 5.00 
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\LanmanWorkstation\Parameters]
+"DomainCompatibilityMode"=dword:00000001
+"DNSNameResolutionRequired"=dword:00000000
+
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths]
+"\\\\*\\netlogon"="RequireMutualAuthentication=0,RequireIntegrity=0,RequirePrivacy=0" 
+`````
+
+run it. Confirm when asked once is finished, restart the machine.
+
+Now change the domain (repeat the steps for computer name change). 
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-6.png)
+
+once you click ok, an user will be asked. Inform the root user and his password as registered on samba.
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-7.png)
+
+A success message should be displayed
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-8.png)
+
+reboot the system.
+
+In order to access the system now, we use *other user* passing the *Domain\username* as username:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-9.png)
+
+you can check if is working by accessing network folders and ths pc folder:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-10.png)
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/client/samba-domain-register-step-11.png)

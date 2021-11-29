@@ -140,3 +140,134 @@ Now we can mount the shared folder by running the command *cifs.mount*. As examp
 mount.cifs //192.168.200.173/Downloads /mnt/ -o username=guest,password= 
 ````
 
+## Samba as primary domain controller (PDC)
+
+Open the config file 
+
+````bash
+vim /etc/samba/smb.conf	
+````
+
+set which interfaces will have access. In this case we grant access onty for internal network:
+
+ ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-network-interfaces.png)
+
+uncomment the lines *domain master* and *domain logons* (~ line 172)
+
+ ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-domain-master-domain-logon.png)
+
+change the logon script to *smblogon.bat* and set logon path as empty:
+
+ ![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-logon-script-and-path.png)
+
+change the parameters as bellow:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-local-master.png)
+
+In file system options, set the logon drive:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-logon-drive.png)
+
+on home session, uncomment the line *valid users*
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-home-valid-users.png)
+
+uncomment the session *netlogon* and change the lines as bellow:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-net-logon-definitions.png)
+
+save, close the file and then run the command *testparm* to check if everything is working. The result should look like this:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-testparm.png)
+
+now create the directory defined for the netlogon script:
+
+````bash
+mkdir /home/samba/netlogon
+````
+
+and the script file
+
+````bash
+vim home/samba/netlogon/smblogon.bat
+````
+
+the content of this file will be:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-smblogon-file-content.png)
+
+we need to change the file codification to work on windows. For this we need to install a tool:
+
+````bash
+yum install dos2unix
+````
+
+run the command to convert the file:
+
+````bash
+unix2dos home/samba/netlogon/smblogon.bat 
+````
+
+give permissions to execute:
+
+````bash
+chmod 755 home/samba/netlogon/smblogon.bat 
+````
+
+restart the service;
+
+````bash
+systemctl stop smb
+systemctl stop nmb
+systemctl start nmb
+systemctl start smb
+````
+
+### Add samba user
+
+before we can register a user in samba we need him to be registered in the linuizx system, so let's register the root user and two other users in the system. Having him registered in the system, we can use the *smbpasswd* command to include him in the samba.
+
+**Sintax**
+
+````bash
+smbpasswd -a USERNAME
+````
+
+In this case, we will add the root user, iasmina and lucaschfonseca:
+
+![](https://github.com/lucaschf/Internet-Service-Management-and-Configuration/blob/main/images/server/samba-registering-user.png)
+
+We need to register the machines to limit access only for registered machines. For this, we register the machine as an user of linux and then, register it to samba. Do the following to add a machine;
+
+````bash
+useradd -d /dev/null -s /bin/false desktop$
+````
+
+lock the login
+
+````bash
+passwd -l desktop$
+````
+
+add the machine to samba:
+
+````bash
+smbpasswd -a -m desktop
+````
+
+register the shell in the system's shell relation by opening the file:
+
+````bash
+vim /etc/shells
+````
+
+and adding the line
+
+````bash
+/bin/false
+````
+
+
+
+
+
