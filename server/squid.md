@@ -312,8 +312,8 @@ systemctl start squid
 run the commands bellow, it will add an rule in firewall to reject any http/https outside proxy.
 
 ````bash
-iptables -A FORWARD -0 enp0s3 -p tcp --dport 80 REJECT
-iptables -A FORWARD -0 enp0s3 -p tcp --dport 443 REJECT
+iptables -A FORWARD -o enp0s3 -p tcp --dport 80 -j REJECT
+iptables -A FORWARD -o enp0s3 -p tcp --dport 443 -j REJECT
 ````
 
 ***
