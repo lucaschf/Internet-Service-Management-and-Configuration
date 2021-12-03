@@ -33,7 +33,7 @@ yum update
 install the wsdd tool for autodiscovery:
 
 ````
-yum install 
+yum install wsdd
 ````
 
 override the config file with the example config file:
